@@ -1,26 +1,29 @@
 class Solution {
-    private HashMap<String, Integer> map = new HashMap<>();
 
-    private int helper(int[] nums, int ci, int n) {
-        if (map.containsKey(nums[ci]+"*"+ci)) return map.get(nums[ci]+"*"+ci);
+    private Map<Integer, Integer> map; 
 
-        int sum = nums[ci];
-        int max = 0;
+    public int helper(int[] nums, int n, int idx) {
+        if (idx == n-1) return nums[idx];
+        if (idx >= n) return 0;
+
+        if (map.containsKey(idx)) return map.get(idx);
         
-        for (int k = ci+2; k < n; k++)
-        max = Math.max(max, helper(nums, k, n));
+        int max = Integer.MIN_VALUE;
+        for (int i = idx; i < n; i++)
+        max = Math.max(max, helper(nums, n, i+2));
 
-        sum += max;
-        map.put(nums[ci]+"*"+ci,sum);
-
-        return sum;
+        max += nums[idx];
+        map.put(idx, max);
+        return max;
     }
 
     public int rob(int[] nums) {
-        int res = 0;
-        for (int i = nums.length-1; i >= 0; i--) 
-        res = Math.max(res, helper(nums, i, nums.length));
+        map = new HashMap<>(); 
 
-        return res;
+        int max = Integer.MIN_VALUE;
+        for (int i = nums.length-1; i >= 0; i--)
+        max = Math.max(max, helper(nums, nums.length, i));
+
+        return max;
     }
 }
