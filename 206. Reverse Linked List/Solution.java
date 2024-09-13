@@ -10,20 +10,32 @@
  */
 
 class Solution {
-    public ListNode addNode(ListNode head, ListNode node) {
-        if (head == null) return node;
+    // public ListNode reverseList(ListNode head) {
+    //     if (head == null || head.next == null) return head;
 
-        node.next = head;
-        return node;
-    }
+    //     ListNode newhead = reverseList(head.next);
+
+    //     head.next.next = head;
+    //     head.next = null;
+
+    //     return newhead;
+    // }
+
     public ListNode reverseList(ListNode head) {
-        ListNode thead = null;
+        if (head == null || head.next == null) return head;
 
-        while (head != null) {
-            thead = addNode(thead, new ListNode(head.val));
-            head = head.next;
+        ListNode prev = head;
+        ListNode curr = head.next;
+
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+
+            prev = curr;
+            curr = next;
         }
 
-        return thead;
+        head.next = null;
+        return prev;
     }
 }
